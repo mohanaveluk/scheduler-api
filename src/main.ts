@@ -5,6 +5,8 @@ import { ValidationPipe } from '@nestjs/common';
 import * as http from 'http';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { AuditInterceptor } from './modules/audit/audit.interceptor';
+import { AuditRepository } from './modules/audit/audit.repository';
 require('dotenv').config();
 
 
@@ -17,6 +19,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  //app.useGlobalInterceptors(new AuditInterceptor(app.get(AuditRepository), app.get('ClinicContext')));
+  
 
   // Configure CORS
   app.enableCors({

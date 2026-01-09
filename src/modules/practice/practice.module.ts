@@ -5,10 +5,14 @@ import { ClinicKeysModule } from '../clinic-keys/clinic-keys.module';
 import { PracticeController } from './practice.controller';
 import { PracticeService } from './practice.service';
 import { PracticeRepository } from './practice.repository';
+import { AuditRepository } from '../audit/audit.repository';
+import { ClinicContext } from 'src/common/context/clinic-context.provider';
+import { AuditModule } from '../audit/audit.module';
+import { CommonModule } from 'src/common/common.module';
 
 
 @Module({
-  imports: [HttpModule, ClinicKeysModule],
+  imports: [HttpModule, ClinicKeysModule, CommonModule, AuditModule],
   controllers: [PracticeController],
   providers: [OpenDentalService, PracticeService, PracticeRepository],
   exports: [PracticeService, PracticeRepository],

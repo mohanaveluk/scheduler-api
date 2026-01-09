@@ -1,6 +1,6 @@
 import { PracticeService } from './modules/practice/practice.service';
 import { PracticeController } from './modules/practice/practice.controller';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -12,10 +12,9 @@ import { OpenDentalController } from './modules/opendental/opendental.controller
 import opendentalConfig from './config/opendental.config';
 import { ClinicKeysModule } from './modules/clinic-keys/clinic-keys.module';
 import { AuditModule } from './modules/audit/audit.module';
-import { ClinicContextMiddleware } from './common/middleware/clinic-context.middleware';
-import { ClinicContext } from './common/context/clinic-context.provider';
 import { PatientModule } from './modules/patient/patient.module';
 import { PracticeModule } from './modules/practice/practice.module';
+import { CommonModule } from './common/common.module';
 
 
 @Module({
@@ -30,16 +29,17 @@ import { PracticeModule } from './modules/practice/practice.module';
       inject: [ConfigService],
       useFactory: typeOrmConfig,
     }),
+    CommonModule,
+    AuditModule,
     ClinicKeysModule,
     OpenDentalModule,
     PatientModule,
     PracticeModule,
-    AuditModule
   ],
   controllers: [
     PracticeController, AppController, OpenDentalController],
   providers: [
-    PracticeService, AppService, ClinicContext],
+    PracticeService, AppService],
 })
 export class AppModule {
   // configure(consumer: MiddlewareConsumer) {

@@ -2,18 +2,17 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
 @Injectable()
 export class PracticeRepository {
-  constructor(private readonly dataSource: DataSource) {}
+    constructor(private readonly dataSource: DataSource) { }
 
-  async getPractice(practiceGuid: string) {
-    const [rows] = await this.dataSource.query(
-      `
+    async getPractice(practiceGuid: string) {
+        const [rows] = await this.dataSource.query(
+            `
         SELECT
-
             p.id,
             p.name,
             p.unique_id,
@@ -33,9 +32,23 @@ export class PracticeRepository {
           AND p.active = 1
         LIMIT 1
       `,
-      [practiceGuid],
-    );
-    return rows ?? null;
-  }
-    
+            [practiceGuid],
+        );
+        return rows ?? null;
+    }
+
+    async getvistReasons(practiceGuid: string) {
+        try {
+            const sql = `CALL sp_get_visit_reason_practice_nest(?)`;
+            const params = [practiceGuid];
+            const result = await this.dataSource.query(sql, params);
+
+            return result[0] ?? null;
+        } catch (error) {
+            throw new InternalServerErrorException({
+                message: 'Failed to execute patient merge procedure',
+                error: error.message,
+            });
+        }
+    }
 }

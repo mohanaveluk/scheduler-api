@@ -19,4 +19,12 @@ export class PracticeService {
             throw error.message;
         }
     }
+
+    async getVisitReasons(practiceGuid: string) {
+        try {
+            return await this.practiceRepository.getvistReasons(practiceGuid);
+        } catch (error) {
+            throw error.message;
+        }
+    }
 }

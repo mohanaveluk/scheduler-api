@@ -9,11 +9,11 @@ export class AuditRepository {
     await this.dataSource.query(
       `
       INSERT INTO clinic_audit_logs
-      (clinic_id, api_name, http_method, endpoint, status_code, response_time_ms)
+      (clinic_guid, api_name, http_method, endpoint, status_code, response_time_ms)
       VALUES (?, ?, ?, ?, ?, ?)
       `,
       [
-        entry.clinicId,
+        entry.clinicGuid,
         entry.apiName,
         entry.method,
         entry.endpoint,
