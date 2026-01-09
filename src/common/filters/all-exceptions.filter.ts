@@ -55,7 +55,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? (Array.isArray(message?.message)
           ? message?.message[0]
           : message?.message)
-        : 'Something went wrong',
+        : message || 'Something went wrong',
       timestamp: new Date().toISOString(),
       path: request.url,
     });
